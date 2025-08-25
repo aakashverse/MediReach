@@ -97,9 +97,71 @@ app.post("/analyze-image", upload.single("file"), async (req, res) => {
   }
 });
 
+// POST for text 
+app.post("/analyze-text", async (req, res) => {
+  const userQuery = req.body.text;
+  console.log(userQuery);
+
+  if (!userQuery) {
+    return res.status(400).json({ error: "No text provided" });
+  }
+
+  try {
+    // Make the OpenAI API call
+    const response = await openai.chat.completions.create({
+      model: "gpt-4.1-mini",
+      messages: [
+        {
+          role: "system",
+          content: "You are a medical assistant. Analyze the user's symptoms and respond ONLY with a JSON object using the following keys:\n" +
+            "'possibleConditions' (string), 'urgency' (string), 'possiblePrescription' (string), 'recommendations' (string). Do not include any text or explanation outside the JSON."
+        },
+        {
+          role: "user",
+          content: userQuery,
+        },
+      ],
+      max_tokens: 1000,
+    });
+
+    const content = response.choices[0].message.content;
+    console.log(content);
+    
+    let parsed;
+    try {
+      const jsonMatch = content.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
+      const jsonText = jsonMatch ? jsonMatch[1] : content;
+      parsed = JSON.parse(content);
+    } catch (e) {
+      console.error("OpenAI response is not valid JSON:", content);
+      return res.status(500).json({ error: "Invalid response from OpenAI" });
+    }
+
+    res.json(parsed);
+    
+  } catch (error) {
+    console.error("Analysis failed:", error);
+    
+    // More specific error messages
+    if (error.code === 'invalid_api_key') {
+      return res.status(500).json({ error: "Invalid OpenAI API key" });
+    } else if (error.code === 'model_not_found') {
+      return res.status(500).json({ error: "Model not available" });
+    } else {
+      return res.status(500).json({ error: "Analysis failed: " + error.message });
+    }
+  }
+});
+
+
+app.get("/analyze-text", (req, res) => {
+  res.json({ message: "Wound analysis API is running. Use POST to analyze text." });
+});
+
+
 // GET endpoint (for testing)
 app.get("/analyze-image", (req, res) => {
-  res.json({ message: "Wound analysis API is running. Use POST to analyze images." });
+  res.json({ message: "Symptom analysis API is running. Use POST /analyze-text with a JSON body containing a 'text' field to analyze symptoms." });
 });
 
 // Start server
