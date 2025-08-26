@@ -29,6 +29,12 @@ const openai = new OpenAI({
   apiKey: process.env.VITE_OPENAI_API_KEY
 });
 
+app.get("/signup",(req,res)=>{
+  const data = req.body;
+  console.log(data);
+})
+
+
 // POST endpoint for wound analysis
 app.post("/analyze-image", upload.single("file"), async (req, res) => {
   if (!req.file) {
@@ -113,8 +119,7 @@ app.post("/analyze-text", async (req, res) => {
       messages: [
         {
           role: "system",
-          content: "You are a medical assistant. Analyze the user's symptoms and respond ONLY with a JSON object using the following keys:\n" +
-            "'possibleConditions' (string), 'urgency' (string), 'possiblePrescription' (string), 'recommendations' (string). Do not include any text or explanation outside the JSON."
+          content: "You are a medical assistant. Analyze the user's symptoms and respond ONLY with a JSON object using the following keys:\n\n- 'possibleConditions' (string): List likely medical conditions based on symptoms.\n- 'urgency' (string): Describe how urgent the condition is (e.g. \"emergency\", \"see a doctor within 24 hours\", \"mild/self-treatable\").\n- 'recoverySuggestions' (string): Provide general suggestions for recovery at home.\n- 'recommendations' (string): Mention next steps including whether to see a doctor, specialist, or go to the ER.\n- 'prescription' (string): Suggest possible over-the-counter or commonly prescribed medications (include a disclaimer to consult a doctor before use).\n- 'testsAndCheckups' (string): Suggest relevant diagnostic tests, screenings, or physical exams.\n- 'speedyRecoveryTips' (string): Provide practical tips to help the user recover faster.\n\nTailor the response based on what the user is likely trying to understand: what’s wrong, how serious it is, what to do next, and how to feel better quickly.\n\nReturn only a valid JSON object. Do NOT include any explanation or text outside the JSON.",
         },
         {
           role: "user",

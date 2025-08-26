@@ -72,7 +72,7 @@ export default function AnalyzeImage() {
                 onClick={() => navigate("/")}
                 className="mb-4 sm:mb-6 text-blue-500 hover:text-blue-700 flex items-center text-sm sm:text-base"
                 >
-                <span>←</span> Back to Home
+                <span>🡰</span> Back to Home
             </button>
 
         {!result? (

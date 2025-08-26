@@ -1,131 +1,114 @@
 import { useState } from "react";
 
-export default function Signup() {
+const PatientSignupForm = () => {
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: ""
+    fullName: '',
+    email: '',
+    password: '',
+    dateOfBirth: '',
+    phone: '',
+    bloodType: '',
+    knownAllergies: '',
+    medicalConditions: ''
   });
 
-  const [message, setMessage] = useState("");
-
   const handleChange = (e) => {
-    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setMessage("");
-
-    if (formData.password !== formData.confirmPassword) {
-      setMessage("Passwords do not match");
-      return;
-    }
-
-    try {
-      const res = await fetch("/api/auth/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          password: formData.password
-        }),
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        setMessage("Account created successfully!");
-        if (data.token) {
-          localStorage.setItem("authToken", data.token);
-        }
-      } else {
-        setMessage(data.message || "Signup failed");
-      }
-    } catch (err) {
-      setMessage("Error contacting server");
-    }
+    // TODO: Add validation and API call here
+    console.log('Submitted data:', formData);
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="max-w-md w-full bg-white p-6 rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold text-center mb-6">Sign Up</h2>
-        
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <input
-              type="text"
-              name="name"
-              placeholder="Full Name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-
-          <div>
-            <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-
-          <div>
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-
-          <div>
-            <input
-              type="password"
-              name="confirmPassword"
-              placeholder="Confirm Password"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition duration-200"
-          >
-            Create Account
-          </button>
-        </form>
-
-        {message && (
-          <div className={`mt-4 p-3 rounded-md ${
-            message.includes("successful") ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
-          }`}>
-            {message}
-          </div>
-        )}
-
+    <div className="max-w-2xl mx-auto px-4 py-8">
+      <h2 className="text-2xl font-bold text-center mb-6">Patient Sign Up</h2>
+      <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded-md shadow-md">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <input
+            type="text"
+            name="fullName"
+            placeholder="Full Name"
+            value={formData.fullName}
+            onChange={handleChange}
+            className="input"
+            required
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleChange}
+            className="input"
+            required
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleChange}
+            className="input"
+            required
+          />
+          <input
+            type="date"
+            name="dateOfBirth"
+            placeholder="Date of Birth"
+            value={formData.dateOfBirth}
+            onChange={handleChange}
+            className="input"
+            required
+          />
+          <input
+            type="text"
+            name="bloodType"
+            placeholder="Blood Type (e.g. A+, B-, O+)"
+            value={formData.bloodType}
+            onChange={handleChange}
+            className="input"
+          />
+        </div>
+        <textarea
+          name="knownAllergies"
+          placeholder="Known Allergies"
+          value={formData.knownAllergies}
+          onChange={handleChange}
+          className="input w-full"
+        />
+        <textarea
+          name="medicalConditions"
+          placeholder="Medical Conditions"
+          value={formData.medicalConditions}
+          onChange={handleChange}
+          className="input w-full"
+        />
+        <button
+          type="submit"
+          className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition duration-200"
+        >
+          Sign Up
+        </button>
         <p className="mt-4 text-center text-sm text-gray-600">
           Already have an account?{" "}
-          <a href="/login" className="text-blue-600 hover:underline">
+          <a
+            href="/login"
+            className="text-blue-600 hover:underline"
+          >
             Login
           </a>
         </p>
-      </div>
+      </form>
+      
     </div>
   );
-}
+};
+
+export default PatientSignupForm;

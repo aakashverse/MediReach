@@ -56,7 +56,7 @@ export default function SymptomChecker() {
                 onClick={() => navigate("/")}
                 className="mb-4 sm:mb-6 text-blue-500 hover:text-blue-700 flex items-center text-sm sm:text-base"
             >
-                <span>←</span> Back to Home
+                <span>🡰</span> Back to Home
             </button>
             
             {!result? (
@@ -120,7 +120,7 @@ export default function SymptomChecker() {
                 <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-6">
                     <div className="bg-white rounded-lg p-3 sm:p-4 border border-gray-100 shadow-xs">
                         <div className="flex items-center mb-2">
-                            <span className="text-blue-600 text-lg sm:text-xl mr-2">📖</span>
+                            <span className="text-blue-600 text-lg sm:text-xl mr-2">🩺</span>
                             <h3 className="font-semibold text-gray-700 text-sm sm:text-base">Possible Conditions</h3>
                         </div>
                         <p className="text-gray-800 text-base sm:text-lg">{result.possibleConditions || "Not specified"}</p>
@@ -128,7 +128,7 @@ export default function SymptomChecker() {
 
                     <div className="bg-white rounded-lg p-3 sm:p-4 border border-gray-100 shadow-xs">
                         <div className="flex items-center mb-2">
-                            <span className="text-yellow-600 text-lg sm:text-xl mr-2">⚠️</span>
+                            <span className="text-yellow-600 text-lg sm:text-xl mr-2">⏰</span>
                             <h3 className="font-semibold text-gray-700 text-sm sm:text-base">Urgency</h3>
                         </div>
                         <p className="text-gray-800 text-base sm:text-lg">{result.urgency || "Not specified"}</p>
@@ -136,10 +136,26 @@ export default function SymptomChecker() {
 
                     <div className="bg-white rounded-lg p-3 sm:p-4 border border-gray-100 shadow-xs">
                         <div className="flex items-center mb-2">
-                            <span className="text-green-600 text-lg sm:text-xl mr-2">💊</span>
-                            <h3 className="font-semibold text-gray-700 text-sm sm:text-base">Recommendations</h3>
+                            <span className="text-green-600 text-lg sm:text-xl mr-2">📋</span>
+                            <h3 className="font-semibold text-gray-700 text-sm sm:text-base">Recommended Actions</h3>
                         </div>
                         <p className="text-gray-800 text-base sm:text-lg">{result.recommendations || "Not specified"}</p>
+                    </div>
+
+                    <div className="bg-white rounded-lg p-3 sm:p-4 border border-gray-100 shadow-xs">
+                        <div className="flex items-center mb-2">
+                            <span className="text-green-600 text-lg sm:text-xl mr-2">💊</span>
+                            <h3 className="font-semibold text-gray-700 text-sm sm:text-base">Prescription Advice</h3>
+                        </div>
+                        <p className="text-gray-800 text-base sm:text-lg">{result.prescription || "Not specified"}</p>
+                    </div>
+
+                    <div className="bg-white rounded-lg p-3 sm:p-4 border border-gray-100 shadow-xs">
+                        <div className="flex items-center mb-2">
+                            <span className="text-green-600 text-lg sm:text-xl mr-2">🧪</span>
+                            <h3 className="font-semibold text-gray-700 text-sm sm:text-base">Recommended Tests & Checkups</h3>
+                        </div>
+                        <p className="text-gray-800 text-base sm:text-lg">{result.testsAndCheckups || "Not specified"}</p>
                     </div>
                 </div>
 

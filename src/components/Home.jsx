@@ -1,9 +1,7 @@
-
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Login from "./Login";
-import Signup from "./Signup";
+import PatientSignupForm from "./Signup";
 import Report from "./Report";
 import SymptomCheckAlert from "./SymptomCheckAlert";
 import AnalyzeImage from "./AnalyzeImage";
@@ -174,7 +172,7 @@ export default function Home() {
             {authMode === "login" ? (
               <Login onClose={() => setShowAuthForm(false)} />
             ) : (
-              <Signup onClose={() => setShowAuthForm(false)} />
+              <PatientSignupForm onClose={() => setShowAuthForm(false)} />
             )}
           </div>
         </div>
