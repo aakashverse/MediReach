@@ -96,7 +96,7 @@ export default function AnalyzeImage() {
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                                     </svg>
                                     <p className="text-xs sm:text-sm text-gray-600">Click to upload or drag and drop</p>
-                                    <p className="text-xs text-gray-500 mt-1">JPG, PNG, GIF up to 10MB</p>
+                                    <p className="text-xs text-gray-500 mt-1">JPG, PNG</p>
                                 </div>
                             </label>
                         </div>

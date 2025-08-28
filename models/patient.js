@@ -15,20 +15,16 @@ const PatientSchema = new Schema({
     },
     age: {
         type: Number,
-        required: true,
     } ,
     height: {
         type: Number,
-        required: true,
     },
     weight: {
         type: Number,
-        required: true,
     },
     bloodGroup: {
         type: String,
         enum: ["A+", "B+", "AB+", "O+", "AB-"],
-        required : true,
     },
     allergies: {
         type: String,
@@ -38,4 +34,4 @@ const PatientSchema = new Schema({
     }
 });
 
-export const patient = mongoose.model("patient", PatientSchema);
+export const Patient = mongoose.model("Patient", PatientSchema);

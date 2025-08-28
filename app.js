@@ -5,12 +5,15 @@ import cors from 'cors';
 import fs from "fs";
 import dotenv from "dotenv";
 import OpenAI from "openai";
+import authRoutes from './routes/auth.js';
+import verifyToken from "./Middlewares/verify.js"
+
 
 dotenv.config();
-
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use('/', authRoutes); 
 
 const upload = multer({ dest: "uploads/" });
 
@@ -29,14 +32,9 @@ const openai = new OpenAI({
   apiKey: process.env.VITE_OPENAI_API_KEY
 });
 
-app.get("/signup",(req,res)=>{
-  const data = req.body;
-  console.log(data);
-})
 
-
-// POST endpoint for wound analysis
-app.post("/analyze-image", upload.single("file"), async (req, res) => {
+// for analyze image
+app.post("/analyze-image", verifyToken, upload.single("file"), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: "No file uploaded." });
   }
@@ -44,11 +42,11 @@ app.post("/analyze-image", upload.single("file"), async (req, res) => {
   const imagePath = req.file.path;
 
   try {
-    // Read and encode the image
+    // encode the photo
     const imageBuffer = fs.readFileSync(imagePath);
     const base64Image = imageBuffer.toString('base64');
 
-    // Make the OpenAI API call
+    
     const response = await openai.chat.completions.create({
       model: "gpt-4.1-mini",
       messages: [
@@ -87,7 +85,7 @@ app.post("/analyze-image", upload.single("file"), async (req, res) => {
   } catch (error) {
     console.error("Analysis failed:", error);
     
-    // More specific error messages
+
     if (error.code === 'invalid_api_key') {
       return res.status(500).json({ error: "Invalid OpenAI API key" });
     } else if (error.code === 'model_not_found') {
@@ -96,15 +94,15 @@ app.post("/analyze-image", upload.single("file"), async (req, res) => {
       return res.status(500).json({ error: "Analysis failed: " + error.message });
     }
   } finally {
-    // Clean up uploaded file
+    // sab cleanup kro 
     if (fs.existsSync(imagePath)) {
       fs.unlinkSync(imagePath);
     }
   }
 });
 
-// POST for text 
-app.post("/analyze-text", async (req, res) => {
+//route for analyze text
+app.post("/analyze-text", verifyToken, async (req, res) => {
   const userQuery = req.body.text;
   console.log(userQuery);
 
@@ -113,7 +111,7 @@ app.post("/analyze-text", async (req, res) => {
   }
 
   try {
-    // Make the OpenAI API call
+    
     const response = await openai.chat.completions.create({
       model: "gpt-4.1-mini",
       messages: [
@@ -147,7 +145,7 @@ app.post("/analyze-text", async (req, res) => {
   } catch (error) {
     console.error("Analysis failed:", error);
     
-    // More specific error messages
+    
     if (error.code === 'invalid_api_key') {
       return res.status(500).json({ error: "Invalid OpenAI API key" });
     } else if (error.code === 'model_not_found') {
@@ -159,13 +157,13 @@ app.post("/analyze-text", async (req, res) => {
 });
 
 
-app.get("/analyze-text", (req, res) => {
+app.get("/analyze-text", verifyToken, (req, res) => {
   res.json({ message: "Wound analysis API is running. Use POST to analyze text." });
 });
 
 
 // GET endpoint (for testing)
-app.get("/analyze-image", (req, res) => {
+app.get("/analyze-image", verifyToken, (req, res) => {
   res.json({ message: "Symptom analysis API is running. Use POST /analyze-text with a JSON body containing a 'text' field to analyze symptoms." });
 });
 

@@ -1,6 +1,8 @@
 import { useState } from "react";
+import {useNavigate } from "react-router";
 
 const PatientSignupForm = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -20,14 +22,49 @@ const PatientSignupForm = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // TODO: Add validation and API call here
-    console.log('Submitted data:', formData);
-  };
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    const response = await fetch("http://localhost:8080/signup", { 
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        name: formData?.fullName,     
+        email: formData?.email,
+        password: formData?.password,
+        dateOfBirth: formData?.dateOfBirth,
+        phone: formData?.phone,
+        bloodType: formData?.bloodType,
+        knownAllergies: formData?.knownAllergies,
+        medicalConditions: formData?.medicalConditions
+      })
+    });
+
+    const data = await response.json();
+    console.log(response)
+
+    if (response.ok) {
+      alert("Signup successful!");
+      if(typeof window !== "undefined") {
+        localStorage.setItem("user", JSON.stringify(data.user));
+        localStorage.setItem("token", data.token);
+      }
+      navigate("/");  
+    } else {
+      alert(data.message || "Signup failed");
+    }
+  } catch (error) {
+    console.error("Signup error:", error);
+    alert("An error occurred. Please try again.");
+  }
+ };
+
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-8">
+    <div className="max-w-2xl mx-auto px-4 py-8 mt-20">
       <h2 className="text-2xl font-bold text-center mb-6">Patient Sign Up</h2>
       <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded-md shadow-md">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
