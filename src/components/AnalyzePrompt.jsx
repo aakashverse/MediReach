@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
-export default function SymptomChecker() {
+export default function AnalyzePrompt() {
     const navigate = useNavigate();
     const [result, setResult] = useState(null);
     const [inputText, setInputText] = useState('');

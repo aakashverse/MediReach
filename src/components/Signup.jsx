@@ -35,9 +35,11 @@ const PatientSignupForm = () => {
         name: formData?.fullName,     
         email: formData?.email,
         password: formData?.password,
-        dateOfBirth: formData?.dateOfBirth,
-        phone: formData?.phone,
         bloodType: formData?.bloodType,
+        age: formData?.age,
+        height: formData?.height,
+        weight: formData?.weight,
+        gender: formData?.gender,
         knownAllergies: formData?.knownAllergies,
         medicalConditions: formData?.medicalConditions
       })
@@ -61,7 +63,6 @@ const PatientSignupForm = () => {
     alert("An error occurred. Please try again.");
   }
  };
-
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8 mt-20">
@@ -95,11 +96,38 @@ const PatientSignupForm = () => {
             className="input"
             required
           />
+           <input
+            type="Number"
+            name="age"
+            placeholder="Age"
+            value={formData.age}
+            onChange={handleChange}
+            className="input"
+            required
+          />
+           <input
+            type="String"
+            name="gender"
+            placeholder="Gender"
+            value={formData.age}
+            onChange={handleChange}
+            className="input"
+            required
+          />
+           <input
+            type="Number"
+            name="height"
+            placeholder="Height (in cm)"
+            value={formData.height}
+            onChange={handleChange}
+            className="input"
+            required
+          />
           <input
-            type="date"
-            name="dateOfBirth"
-            placeholder="Date of Birth"
-            value={formData.dateOfBirth}
+            type="Number"
+            name="weight"
+            placeholder="Weight (in kg)"
+            value={formData.weight}
             onChange={handleChange}
             className="input"
             required
