@@ -6,18 +6,26 @@ export default function AnalyzePrompt() {
     const [result, setResult] = useState(null);
     const [inputText, setInputText] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-
+    
     const handleAnalyze = async () => {
+        const token = localStorage.getItem("token");
+         if (!token) {
+            alert("You are not logged in. Please log in again.");
+            return navigate("/login");
+        }
+        
         if (!inputText.trim()) return alert("Please enter a description of your symptoms.");
-
+        
         setIsLoading(true);
         setResult(null);
 
         try {
+            console.log("Token: ", token);
             const response = await fetch("http://localhost:8080/analyze-text", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
                 },
                 body: JSON.stringify({ text: inputText })
             });

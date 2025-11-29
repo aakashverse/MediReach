@@ -7,8 +7,9 @@ const PatientSignupForm = () => {
     fullName: '',
     email: '',
     password: '',
-    dateOfBirth: '',
-    phone: '',
+    age: '',
+    height: '',
+    weight: '',
     bloodType: '',
     knownAllergies: '',
     medicalConditions: ''
@@ -35,12 +36,11 @@ const PatientSignupForm = () => {
         name: formData?.fullName,     
         email: formData?.email,
         password: formData?.password,
-        bloodType: formData?.bloodType,
+        bloodGroup: formData?.bloodType,
         age: formData?.age,
         height: formData?.height,
         weight: formData?.weight,
-        gender: formData?.gender,
-        knownAllergies: formData?.knownAllergies,
+        allergies: formData?.knownAllergies,
         medicalConditions: formData?.medicalConditions
       })
     });
@@ -100,15 +100,6 @@ const PatientSignupForm = () => {
             type="Number"
             name="age"
             placeholder="Age"
-            value={formData.age}
-            onChange={handleChange}
-            className="input"
-            required
-          />
-           <input
-            type="String"
-            name="gender"
-            placeholder="Gender"
             value={formData.age}
             onChange={handleChange}
             className="input"

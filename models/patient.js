@@ -16,10 +16,6 @@ const PatientSchema = new Schema({
     age: {
         type: Number,
     },
-    gender:{
-        type: String,
-        enum: ["Male", "Female", "Other"],
-    },
     height: {
         type: Number,
     },
@@ -33,6 +29,9 @@ const PatientSchema = new Schema({
     allergies: {
         type: String,
     },
+    medicalConditions: {
+        type: String,
+    }
   
 });
 

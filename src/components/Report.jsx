@@ -1,7 +1,9 @@
 import { useEffect, useState, useRef } from "react";
+import { useNavigate } from "react-router";
 import html2pdf from "html2pdf.js";
 
 export default function Report() {
+   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const reportRef = useRef();
 
@@ -33,7 +35,8 @@ export default function Report() {
       setUser(JSON.parse(storedUser));
     }
   }, []);
-
+  console.log(user);
+  
   const downloadPDF = () => {
     const element = reportRef.current;
     const opt = {
@@ -54,9 +57,35 @@ export default function Report() {
     );
   }
 
+  const findBMI = (height,weight)=>{
+    if(!height || !weight) return "N/A";
+    height = height/100;
+    const bmi = weight/(height*height);
+    const roundedBMI = bmi.toFixed(2)
+
+    let category = "";
+    if(bmi<18.5)
+      category = "Underweight";
+    else if(bmi<24.9)
+      category = "Normal";
+    else if(bmi<29.9)
+      category = "Overweight"
+    else
+      category = "Obese";
+
+    return `${roundedBMI} (${category})`;
+  }
+
   return (
+     <div className="container mx-auto p-3 sm:p-4 mt-4">
+            <button 
+                onClick={() => navigate("/")}
+                className="mb-4 sm:mb-6 text-blue-500 hover:text-blue-700 flex items-center text-sm sm:text-base"
+            >
+                <span>🡰</span> Back to Home
+            </button>
+
     <div className="min-h-screen bg-gray-100 py-8 px-4 font-serif">
-      {/* Download Button */}
       <div className="flex justify-end mb-4">
         <button
           onClick={downloadPDF}
@@ -78,17 +107,18 @@ export default function Report() {
           Patient Information
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-800 text-md mb-6">
-          <p><span className="font-semibold">Name:</span> {user.name}</p>
-          <p><span className="font-semibold">Gender:</span> {user.gender}</p>
-          <p><span className="font-semibold">Height:</span> {user.height}</p>
-          <p><span className="font-semibold">Weight:</span> {user.weight}</p>
-          <p><span className="font-semibold">Age:</span> {user.Age}</p>
+          <p><span className="font-semibold border-solid">Name:</span> {user.name}</p>
+          <p><span className="font-semibold">Age:</span> {user.age} year</p>
           <p><span className="font-semibold">Blood Group:</span> {user.bloodGroup}</p>
-          <p className="sm:col-span-2"><span className="font-semibold">Allergies:</span> {user.allergies || "None"}</p>
+          <p><span className="font-semibold">Height:</span> {user.height} cm</p>
+          <p><span className="font-semibold">Weight:</span> {user.weight} kg</p>
+          <p><span className="font-semibold">BMI:</span> {findBMI(user.height,user.weight)}</p>
+          <p className="sm:col-span-2"><span className="font-semibold">Allergies:</span> {user.knownAllergies || "None"}</p>
+          <p className="sm:col-span-2"><span className="font-semibold">Medical Conditions:</span> {user.medicalConditions || "None"}</p>
         </div>
 
         {/* Medical History */}
-        <h2 className="text-xl font-bold text-gray-800 border-b pb-2 mb-4">Medical History</h2>
+        <h2 className="text-xl font-bold text-gray-800 border-b pb-2 mb-4">Past Medical History</h2>
         <div className="space-y-4">
           {medicalHistory.map((entry, index) => (
             <div key={index} className="border rounded-md p-4 bg-gray-50">
@@ -103,6 +133,7 @@ export default function Report() {
         <span className="text-gray-600">Generated on {new Date().toLocaleString()}</span>
       </div>
       </div>
+    </div>
     </div>
   );
 }

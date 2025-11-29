@@ -50,17 +50,21 @@ export default function Home() {
               alt="MediReach Logo"
               className="h-8 md:h-10 w-auto invert"
             />
-            <h2 className="text-lg md:text-xl font-bold ml-2">MediReach</h2>
+            <h2 className="text-lg md:text-xl font-bold ml-2">MediBuddy</h2>
           </div>
 
           <nav className="hidden md:flex items-center gap-5">
-            <a href="#" className="hover:text-red-500">Features</a>
-            <a href="#" className="hover:text-red-500">How it works</a>
-            <a href="#" className="hover:text-red-500">About</a>
+            <a href="#" className=" hover:text-yellow-500 relative after:block after:h-[2px] after:w-0 after:bg-yellow-500 after:transition-all after:duration-500 hover:after:w-full">Features</a>
+            <a href="#" className=" hover:text-red-500 relative after:block after:h-[2px] after:w-0 after:bg-red-500 after:transition-all after:duration-500 hover:after:w-full">How it works</a>
+            <a href="#" className=" hover:text-indigo-500 relative after:block after:h-[2px] after:w-0 after:bg-indigo-500 after:transition-all after:duration-500 hover:after:w-full">About</a>
 
             {user ? (
               <>
-                <button onClick={handleLogout} className="ml-2 md:flex bg-red-500 px-2 py-1 rounded text-sm">Logout</button>
+               {/* <a href="/profile" className="hover:text-green-500 text-sm hover:underline">My Profile</a> */}
+            <a href="/profile" class="text-sm text-white hover:text-blue-500 relative after:block after:h-[2px] after:w-0 after:bg-blue-500 after:transition-all after:duration-500 hover:after:w-full">
+              My Profile
+            </a>
+                <button onClick={handleLogout} className="ml-2 md:flex bg-red-800 hover:bg-red-500 px-2 py-1 rounded text-sm">Logout</button>
               </>
             ) : (
               <>
@@ -72,7 +76,8 @@ export default function Home() {
                 </button>
               </>
             )}
-            <a href="/profile" className="hover:text-green-500 text-sm">My Profile</a>
+           
+
           </nav>
 
           <button className="md:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
